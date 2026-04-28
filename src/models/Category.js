@@ -2,13 +2,13 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database.config');
 
 const Category = sequelize.define('Category', {
-  id: {
+  uuid: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true
   },
   name: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(100),
     allowNull: false,
     validate: {
       len: [1, 100],
@@ -16,26 +16,14 @@ const Category = sequelize.define('Category', {
     }
   },
   color: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: '#007bff',
-    validate: {
-      is: /^#[0-9A-F]{6}$/i
-    }
-  },
-  user_id: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    references: {
-      model: 'users',
-      key: 'id'
-    }
+    type: DataTypes.STRING(50),
+    allowNull: true
   }
 }, {
   tableName: 'categories',
   timestamps: true,
   createdAt: 'created_at',
-  updatedAt: false
+  updatedAt: 'updated_at'
 });
 
 module.exports = Category;

@@ -37,7 +37,7 @@ const authMiddleware = async (req, res, next) => {
 
     // Attach user to request
     req.user = user;
-    req.userId = user.id;
+    req.userId = user.uuid;
     
     next();
   } catch (error) {
@@ -69,7 +69,7 @@ const optionalAuth = async (req, res, next) => {
 
     if (user) {
       req.user = user;
-      req.userId = user.id;
+      req.userId = user.uuid;
     }
     
     next();

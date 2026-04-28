@@ -33,9 +33,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // API routes
-app.use('/api/auth', require('./routes/auth.routes'));
-app.use('/api/users', require('./routes/user.routes'));
-app.use('/api/todos', require('./routes/todo.routes'));
+app.use('/', require('./routes'));
 
 // Health check endpoint
 app.get('/health', (req, res) => {

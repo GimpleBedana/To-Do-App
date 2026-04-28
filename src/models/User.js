@@ -3,22 +3,22 @@ const sequelize = require('../config/database.config');
 const bcrypt = require('bcrypt');
 
 const User = sequelize.define('User', {
-  id: {
+  uuid: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true
   },
   username: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(100),
     allowNull: false,
     unique: true,
     validate: {
-      len: [3, 50],
+      len: [3, 100],
       notEmpty: true
     }
   },
   email: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
     allowNull: false,
     unique: true,
     validate: {
@@ -27,7 +27,7 @@ const User = sequelize.define('User', {
     }
   },
   password_hash: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
     validate: {
       notEmpty: true

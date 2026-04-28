@@ -9,7 +9,6 @@ const start = async () => {
     const PORT = serverConfig.port;
     app.listen(PORT, () => {
       console.log(`🚀 Server is running on port ${PORT}`);
-      console.log(`📝 Environment: ${serverConfig.nodeEnv}`);
       console.log(`🔗 Health check: http://localhost:${PORT}/health`);
     });
   } catch (error) {

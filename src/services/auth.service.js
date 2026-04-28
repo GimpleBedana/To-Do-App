@@ -32,13 +32,13 @@ class AuthService {
     });
 
     // Generate tokens
-    const payload = { userId: user.id, email: user.email };
+    const payload = { userId: user.uuid, email: user.email };
     const accessToken = JWTUtils.generateToken(payload);
     const refreshToken = JWTUtils.generateRefreshToken(payload);
 
     // Return user data without password
     const userResponse = {
-      id: user.id,
+      id: user.uuid,
       username: user.username,
       email: user.email,
       created_at: user.created_at,
@@ -70,13 +70,13 @@ class AuthService {
     }
 
     // Generate tokens
-    const payload = { userId: user.id, email: user.email };
+    const payload = { userId: user.uuid, email: user.email };
     const accessToken = JWTUtils.generateToken(payload);
     const refreshToken = JWTUtils.generateRefreshToken(payload);
 
     // Return user data without password
     const userResponse = {
-      id: user.id,
+      id: user.uuid,
       username: user.username,
       email: user.email,
       created_at: user.created_at,
@@ -103,7 +103,7 @@ class AuthService {
       }
 
       // Generate new access token
-      const payload = { userId: user.id, email: user.email };
+      const payload = { userId: user.uuid, email: user.email };
       const newAccessToken = JWTUtils.generateToken(payload);
 
       return {
@@ -124,7 +124,7 @@ class AuthService {
     }
 
     return {
-      id: user.id,
+      id: user.uuid,
       username: user.username,
       email: user.email,
       created_at: user.created_at,
@@ -144,7 +144,7 @@ class AuthService {
     // Check for conflicts if updating username or email
     if (username || email) {
       const whereClause = {
-        id: { [User.sequelize.Sequelize.Op.ne]: userId }
+        uuid: { [User.sequelize.Sequelize.Op.ne]: userId }
       };
 
       if (username) whereClause.username = username;
@@ -167,7 +167,7 @@ class AuthService {
 
     // Return updated user data
     return {
-      id: user.id,
+      id: user.uuid,
       username: user.username,
       email: user.email,
       created_at: user.created_at,
