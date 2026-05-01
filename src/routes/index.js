@@ -2,6 +2,7 @@ const express = require('express');
 const authRoutes = require('./auth.routes');
 const userRoutes = require('./user.routes');
 const todoRoutes = require('./todo.routes');
+const categoryRoutes = require('./category.routes');
 
 const router = express.Router();
 
@@ -11,6 +12,7 @@ const API_VERSION = '/api/v1';
 // Mount all routes
 router.use(`${API_VERSION}/auth`, authRoutes);
 router.use(`${API_VERSION}/users`, userRoutes);
+router.use(`${API_VERSION}/categories`, categoryRoutes);
 router.use(`${API_VERSION}/todos`, todoRoutes);
 
 // API info endpoint
@@ -29,6 +31,13 @@ router.get(`${API_VERSION}`, (req, res) => {
       users: {
         profile: 'GET /api/v1/users/profile',
         updateProfile: 'PUT /api/v1/users/profile'
+      },
+      categories: {
+        list: 'GET /api/v1/categories',
+        create: 'POST /api/v1/categories',
+        get: 'GET /api/v1/categories/:id',
+        update: 'PUT /api/v1/categories/:id',
+        delete: 'DELETE /api/v1/categories/:id'
       },
       todos: {
         list: 'GET /api/v1/todos',

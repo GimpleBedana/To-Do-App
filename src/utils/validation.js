@@ -34,6 +34,32 @@ const userSchemas = {
   }).min(1)
 };
 
+
+const categorySchemas = {
+  create: Joi.object({
+    name: Joi.string().min(1).max(100).required().messages({
+      'string.min': 'Category name cannot be empty',
+      'string.max': 'Category name cannot exceed 100 characters',
+      'any.required': 'Category name is required'
+    }),
+    color: Joi.string().pattern(/^#[0-9A-F]{6}$/i).default('#007bff').messages({
+      'string.pattern.base': 'Color must be a valid hex color code (e.g., #FF5733)'
+    })
+  }),
+
+  params: Joi.object({
+    id: Joi.string().uuid().required().messages({
+      'string.guid': 'Invalid category ID format',
+      'any.required': 'Category ID is required'
+    })
+  }),
+
+  update: Joi.object({
+    name: Joi.string().min(1).max(100).optional(),
+    color: Joi.string().pattern(/^#[0-9A-F]{6}$/i).optional()
+  }).min(1)
+};
+
 const todoSchemas = {
   create: Joi.object({
     title: Joi.string().min(1).max(255).required().messages({
@@ -45,6 +71,22 @@ const todoSchemas = {
     priority: Joi.string().valid('low', 'medium', 'high').default('medium'),
     due_date: Joi.date().iso().optional(),
     category_id: Joi.string().uuid().optional()
+  }),
+
+  query: Joi.object({
+    page: Joi.number().integer().min(1).default(1),
+    limit: Joi.number().integer().min(1).max(100).default(10),
+    status: Joi.string().valid('pending', 'in_progress', 'completed').optional(),
+    priority: Joi.string().valid('low', 'medium', 'high').optional(),
+    category_id: Joi.string().uuid().optional(),
+    search: Joi.string().max(100).optional()
+  }),
+
+  params: Joi.object({
+    id: Joi.string().uuid().required().messages({
+      'string.guid': 'Invalid todo ID format',
+      'any.required': 'Todo ID is required'
+    })
   }),
 
   update: Joi.object({
@@ -63,33 +105,6 @@ const todoSchemas = {
     })
   })
 };
-
-const categorySchemas = {
-  create: Joi.object({
-    name: Joi.string().min(1).max(100).required().messages({
-      'string.min': 'Category name cannot be empty',
-      'string.max': 'Category name cannot exceed 100 characters',
-      'any.required': 'Category name is required'
-    }),
-    color: Joi.string().pattern(/^#[0-9A-F]{6}$/i).default('#007bff').messages({
-      'string.pattern.base': 'Color must be a valid hex color code (e.g., #FF5733)'
-    })
-  }),
-
-  update: Joi.object({
-    name: Joi.string().min(1).max(100).optional(),
-    color: Joi.string().pattern(/^#[0-9A-F]{6}$/i).optional()
-  }).min(1)
-};
-
-const paginationSchema = Joi.object({
-  page: Joi.number().integer().min(1).default(1),
-  limit: Joi.number().integer().min(1).max(100).default(10),
-  status: Joi.string().valid('pending', 'in_progress', 'completed').optional(),
-  priority: Joi.string().valid('low', 'medium', 'high').optional(),
-  category_id: Joi.string().uuid().optional(),
-  search: Joi.string().max(100).optional()
-});
 
 const validate = (schema, source = 'body') => {
   return (req, res, next) => {
@@ -120,10 +135,12 @@ const validate = (schema, source = 'body') => {
   };
 };
 
+const validateRequest = (schema, source = 'body') => validate(schema, source);
+
 module.exports = {
   userSchemas,
   todoSchemas,
   categorySchemas,
-  paginationSchema,
-  validate
+  validate,
+  validateRequest
 };
